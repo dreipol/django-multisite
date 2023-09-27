@@ -29,7 +29,7 @@ except ImportError:
     import mock
 
 from django.conf import settings
-from django.conf.urls import url
+from django.urls import path
 from django.contrib.sites.models import Site
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.core.management import call_command
@@ -79,7 +79,7 @@ class TestContribSite(TestCase):
 # So create one:
 # (This is only used by test_integration)
 urlpatterns = [
-    url(r'^domain/$', lambda request, *args, **kwargs: HttpResponse(str(Site.objects.get_current())))
+    path('domain/', lambda request, *args, **kwargs: HttpResponse(str(Site.objects.get_current())))
 ]
 
 @pytest.mark.django_db
