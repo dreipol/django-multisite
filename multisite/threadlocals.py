@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*
-from __future__ import unicode_literals
 from __future__ import absolute_import
+from __future__ import unicode_literals
+
+import sys
+from contextlib import contextmanager
 
 import six
-import sys
-
-from contextlib import contextmanager
-from warnings import warn
+from django.apps import apps
 
 try:
     from threading import local
@@ -18,7 +18,7 @@ try:
     from django.utils.deprecation import MiddlewareMixin
 except ImportError:
     MiddlewareMixin = object
-    
+
 from django.core.exceptions import ImproperlyConfigured
 
 
@@ -31,6 +31,7 @@ def get_request():
 
 class ThreadLocalsMiddleware(MiddlewareMixin):
     """Middleware that saves request in thread local starage"""
+
     def process_request(self, request):
         _thread_locals.request = request
 
@@ -160,7 +161,7 @@ class SiteDomain(SiteID):
     def get_default(self):
         """Returns the default SITE_ID that matches the default domain name."""
         from django.contrib.sites.models import Site
-        if not Site._meta.installed:
+        if not apps.is_installed('django.contrib.sites'):
             raise ImproperlyConfigured('django.contrib.sites is not in '
                                        'settings.INSTALLED_APPS')
 
